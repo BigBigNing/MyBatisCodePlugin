@@ -1,0 +1,33 @@
+<idea-plugin>
+    <id>ynynynynnynyn</id>
+    <name>MyBatisCodePlugin</name>
+    <version>1.0</version>
+    <vendor email="1198904379@qq.com" url="1198904379@qq.com">No Company</vendor>
+
+    <description><![CDATA[
+      可以自动生成model、mapper、xml<br>
+    ]]></description>
+
+    <change-notes><![CDATA[
+      First !!!
+    ]]>
+    </change-notes>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="145.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="MyBatisCode" secondary="true"  anchor="right" canCloseContents="true" icon="/icon/a.png"  factoryClass="com.yn.code.config.ToolWindowConfig" />
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>
