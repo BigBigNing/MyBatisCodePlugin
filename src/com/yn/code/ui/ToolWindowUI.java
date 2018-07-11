@@ -35,6 +35,9 @@ public class ToolWindowUI {
     private JButton modelButton;
     private JButton mapperJavaButton;
     private JButton mapperXmlButton;
+    private JCheckBox modelCheckBox;
+    private JCheckBox mapperCheckBox;
+    private JLabel selectLabel;
     private String projectPath;
     private Project project;
 
@@ -47,6 +50,10 @@ public class ToolWindowUI {
     public ToolWindowUI(Project project) {
         this.project = project;
         this.projectPath = project.getBasePath();
+        // 初始化checkbox
+        modelCheckBox.setSelected(true);
+        mapperCheckBox.setSelected(true);
+
         PropertiesComponent propertiesComponentProject = PropertiesComponent.getInstance(project);
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
         textFieldHost.setText(propertiesComponent.getValue("jdbcHost"));
@@ -167,7 +174,7 @@ public class ToolWindowUI {
                 }else if(!CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
                     defaultFilePath = textFieldModelPath.getText();
                 }else {
-                    defaultFilePath = "E:/";
+                    defaultFilePath = projectPath;
                 }
                 JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
                 jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -245,6 +252,8 @@ public class ToolWindowUI {
                 configModel.setMapperJavaPath(mapperJavaPath);
                 configModel.setMapperXmlPath(mapperXmlPath);
                 configModel.setAuthor(author);
+                configModel.setGenerateModel(modelCheckBox.isSelected());
+                configModel.setGenerateMapper(mapperCheckBox.isSelected());
                 propertiesComponent.setValue("jdbcHost",jdbcHost);
                 propertiesComponent.setValue("jdbcDatabase",jdbcDatabase);
                 propertiesComponent.setValue("jdbcUserName",jdbcUserName);

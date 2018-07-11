@@ -19,6 +19,10 @@ public class ConfigModel {
     private String mapperJavaPath;
     private String mapperXmlPath;
 
+    private Boolean generateModel;
+    private Boolean generateMapper;
+
+
     public String getJdbcHost() {
         return jdbcHost;
     }
@@ -89,5 +93,21 @@ public class ConfigModel {
 
     public void setMapperXmlPath(String mapperXmlPath) {
         this.mapperXmlPath = mapperXmlPath;
+    }
+
+    public Boolean getGenerateModel() {
+        return generateModel;
+    }
+
+    public void setGenerateModel(Boolean generateModel) {
+        this.generateModel = generateModel;
+    }
+
+    public Boolean getGenerateMapper() {
+        return generateMapper;
+    }
+
+    public void setGenerateMapper(Boolean generateMapper) {
+        this.generateMapper = generateMapper;
     }
 }

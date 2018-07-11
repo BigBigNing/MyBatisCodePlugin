@@ -35,7 +35,11 @@ public class CodeGenerate {
             new ModelGenerate(configModel,tableInfo).generate();
             throw new MyException("Table has not primaryKey. Model generated!");
         }
-        new ModelGenerate(configModel,tableInfo).generate();
-        new MapperGenerate(configModel,tableInfo).generate();
+        if(configModel.getGenerateModel()){
+            new ModelGenerate(configModel,tableInfo).generate();
+        }
+        if(configModel.getGenerateMapper()){
+            new MapperGenerate(configModel,tableInfo).generate();
+        }
     }
 }
