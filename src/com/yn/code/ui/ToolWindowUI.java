@@ -85,12 +85,18 @@ public class ToolWindowUI {
                     messageLabel.setText("Password required");
                     return;
                 }
-                TableUtil tableUtil = new TableUtil(jdbcHost,jdbcUserName,jdbcPassword);
-                List<String> allDatabase = tableUtil.getAllDatabase();
-                comboBoxDatabase.removeAllItems();
-                allDatabase.forEach(databaseName -> {
-                    comboBoxDatabase.addItem(databaseName);
-                });
+                try{
+                    TableUtil tableUtil = new TableUtil(jdbcHost,jdbcUserName,jdbcPassword);
+                    List<String> allDatabase = tableUtil.getAllDatabase();
+                    comboBoxDatabase.removeAllItems();
+                    allDatabase.forEach(databaseName -> {
+                        comboBoxDatabase.addItem(databaseName);
+                    });
+                }catch (MyException myException){
+                    messageLabel.setText(myException.getMeg());
+                    LOGGER.info(myException);
+                }
+                messageLabel.setText("这里会展示插件的提示信息");
             }
 
             @Override

@@ -43,12 +43,12 @@ public class TableUtil {
         } catch (MyException e) {
             LOGGER.info(e);
             throw new MyException(e.getMeg());
-        } catch (SQLException e){
+        } catch (Exception e){
             LOGGER.info(e);
             throw new MyException("Table name is wrong!");
         }
         if(CommonUtil.isNullOrEmpty(tableComment)){
-            throw new MyException("Table comment is empty!");
+            throw new MyException("Table not found or table comment is empty!");
         }
         TableInfo tableBase = new TableInfo();
         tableBase.setTableName(tableName);
@@ -82,7 +82,7 @@ public class TableUtil {
         } catch (MyException e) {
             LOGGER.info(e);
             throw new MyException(e.getMeg());
-        } catch (SQLException e){
+        } catch (Exception e){
             LOGGER.info(e);
             throw new MyException("Table name is wrong!");
         }
@@ -103,7 +103,7 @@ public class TableUtil {
         } catch (MyException e) {
             LOGGER.info(e);
             throw new MyException(e.getMeg());
-        } catch (SQLException e){
+        } catch (Exception e){
             LOGGER.info(e);
             throw new MyException(e.getMessage());
         }
