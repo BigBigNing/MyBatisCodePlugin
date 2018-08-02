@@ -23,10 +23,11 @@ public class FreeMarkUtil {
             LOGGER.info(e);
             throw new MyException("Template not found!");
         }
-        if(!fileDir.endsWith("\\")){
-            fileDir = fileDir+ '\\';
+
+        if(!fileDir.endsWith("/")){
+            fileDir = fileDir+ '/';
         }
-        File file = new File(fileDir + fileName);
+        File file= new File(fileDir + fileName);
         if (!file.getParentFile().exists()){
             file.getParentFile().mkdirs();
         }

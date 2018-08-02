@@ -17,7 +17,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ToolWindowUI {
     private JPanel toolWindowContent;
@@ -96,7 +99,7 @@ public class ToolWindowUI {
                     messageLabel.setText(myException.getMeg());
                     LOGGER.info(myException);
                 }
-                messageLabel.setText("这里会展示插件的提示信息");
+                messageLabel.setText("Plugin Message");
             }
 
             @Override
@@ -253,10 +256,9 @@ public class ToolWindowUI {
                 configModel.setJdbcDatabase(jdbcDatabase);
                 configModel.setJdbcUserName(jdbcUserName);
                 configModel.setJdbcPassword(jdbcPassword);
-                configModel.setTableName(tableName);
-                configModel.setModelPath(modelPath);
-                configModel.setMapperJavaPath(mapperJavaPath);
-                configModel.setMapperXmlPath(mapperXmlPath);
+                configModel.setModelPath(modelPath.replace("\\","/"));
+                configModel.setMapperJavaPath(mapperJavaPath.replace("\\","/"));
+                configModel.setMapperXmlPath(mapperXmlPath.replace("\\","/"));
                 configModel.setAuthor(author);
                 configModel.setGenerateModel(modelCheckBox.isSelected());
                 configModel.setGenerateMapper(mapperCheckBox.isSelected());
@@ -269,12 +271,31 @@ public class ToolWindowUI {
                 propertiesComponentProject.setValue("mapperJavaPath",mapperJavaPath);
                 propertiesComponentProject.setValue("mapperXmlPath",mapperXmlPath);
                 propertiesComponent.setValue("author",author);
-                try{
-                    new CodeGenerate().generate(configModel);
+
+                List<String> success = new ArrayList<>();
+                List<String> errors = new ArrayList<>();
+                String[] names = tableName.split(",");
+                for(String name : names){
+                    configModel.setTableName(name);
+                    try{
+                        new CodeGenerate().generate(configModel);
+                        success.add(name);
+                    }catch (MyException myException){
+                        errors.add(name + "(" + myException.getMeg() + ")");
+                        LOGGER.info(myException);
+                    }
+                }
+                if(errors.size() < 1){
                     messageLabel.setText("success!!!");
-                }catch (MyException myException){
-                    messageLabel.setText(myException.getMeg());
-                    LOGGER.info(myException);
+                } else {
+                    String message = "";
+                    for(String s : errors){
+                        message += " " + s;
+                    }
+                    if(success.size() > 0){
+                        message += " others is success";
+                    }
+                    messageLabel.setText(message);
                 }
 
             }
