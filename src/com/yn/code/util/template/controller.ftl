@@ -1,44 +1,44 @@
-package ${basePackage}.controller.${sign};
-import ${basePackage}.model.${sign}.${modelNameUpperCamel};
-import ${basePackage}.service.${sign}.${modelNameUpperCamel}Service;
+package ${controllerGenerateInfo.basePackage};
+import ${controllerGenerateInfo.modelPackage}.${controllerGenerateInfo.modelNameUpperCamel};
+import ${controllerGenerateInfo.servicePackage}.${controllerGenerateInfo.modelNameUpperCamel}Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiOperation;
 
 /**
-* ${modelNameUpperCamel}Controller
+* ${controllerGenerateInfo.modelNameUpperCamel}Controller
 *
-* @author : ${author}
-* @date: ${date}
+* @author : ${controllerGenerateInfo.author}
+* @date: ${controllerGenerateInfo.date}
 **/
 @RestController
-@RequestMapping("/${baseRequestMapping}/")
-public class ${modelNameUpperCamel}Controller {
+@RequestMapping("/${controllerGenerateInfo.baseRequestMapping}/")
+public class ${controllerGenerateInfo.modelNameUpperCamel}Controller {
 
     @Autowired
-    private ${modelNameUpperCamel}Service ${modelNameLowerCamel}Service;
+    private ${controllerGenerateInfo.modelNameUpperCamel}Service ${controllerGenerateInfo.modelNameLowerCamel}Service;
 
     @RequestMapping("add")
     @ApiOperation("新增")
-    public String add(@ModelAttribute ${modelNameUpperCamel} ${modelNameLowerCamel}) {
-        return ${modelNameLowerCamel}Service.save(${modelNameLowerCamel});
+    public String add(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.save(${controllerGenerateInfo.modelNameLowerCamel});
     }
 
     @DeleteMapping("delete/{id}")
     @ApiOperation("删除")
     public String delete(@PathVariable("id") Integer id) {
-        return ${modelNameLowerCamel}Service.deleteById(id);
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.deleteById(id);
     }
 
     @PostMapping("update")
     @ApiOperation("修改")
-    public String update(@ModelAttribute ${modelNameUpperCamel} ${modelNameLowerCamel}) {
-        return ${modelNameLowerCamel}Service.update(${modelNameLowerCamel});
+    public String update(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.update(${controllerGenerateInfo.modelNameLowerCamel});
     }
 
     @GetMapping("detail/{id}")
     @ApiOperation("查询详情")
-    public ${modelNameUpperCamel} detail(@PathVariable("id") Integer id) {
-        return ${modelNameLowerCamel}Service.findById(id);
+    public ${controllerGenerateInfo.modelNameUpperCamel} detail(@PathVariable("id") Integer id) {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.findById(id);
     }
 }

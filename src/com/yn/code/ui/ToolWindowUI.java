@@ -18,31 +18,39 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ToolWindowUI {
     private JPanel toolWindowContent;
+
     private JTextField textFieldHost;
     private JTextField textFieldUserName;
     private JTextField textFieldPassword;
     private JTextField textFieldTableName;
-    private JTextField textFieldModelPath;
-    private JTextField textFieldMapperJavaPath;
-    private JTextField textFieldMapperXmlPath;
     private JTextField textFieldAuthor;
+    private JTextField textFieldProjectPath;
+
     private JComboBox comboBoxDatabase;
+    private JComboBox comboBoxServicePath;
+    private JComboBox comboBoxModelPath;
+    private JComboBox comboBoxMapperPath;
+    private JComboBox comboBoxControllerPath;
+
     private JButton goButton;
-    private JLabel messageLabel;
-    private JButton modelButton;
-    private JButton mapperJavaButton;
-    private JButton mapperXmlButton;
+    private JButton modelPathSelectButton;
+    private JButton mapperPathSelectButton;
+    private JButton projectPathSelectButton;
+    private JButton servicePathSelectButton;
+    private JButton controllerPathSelectButton;
+
     private JCheckBox modelCheckBox;
     private JCheckBox mapperCheckBox;
-    private JLabel selectLabel;
-    private String projectPath;
-    private Project project;
+    private JCheckBox controllerServiceCheckBox;
+
+
+    private JLabel messageLabel;
+
+    private String baseProjectPath;
 
     public JPanel getToolWindowContent(){
         return this.toolWindowContent;
@@ -51,24 +59,35 @@ public class ToolWindowUI {
     private static final Logger LOGGER = Logger.getInstance(ToolWindowUI.class);
 
     public ToolWindowUI(Project project) {
-        this.project = project;
-        this.projectPath = project.getBasePath();
+        this.baseProjectPath = project.getBasePath();
         // 初始化checkbox
         modelCheckBox.setSelected(true);
         mapperCheckBox.setSelected(true);
+        controllerServiceCheckBox.setSelected(true);
 
         PropertiesComponent propertiesComponentProject = PropertiesComponent.getInstance(project);
         PropertiesComponent propertiesComponent = PropertiesComponent.getInstance();
+
         textFieldHost.setText(propertiesComponent.getValue("jdbcHost"));
         textFieldUserName.setText(propertiesComponent.getValue("jdbcUserName"));
         textFieldPassword.setText(propertiesComponent.getValue("jdbcPassword"));
         textFieldTableName.setText(propertiesComponent.getValue("tableName"));
-        textFieldModelPath.setText(propertiesComponentProject.getValue("modelPath"));
-        textFieldMapperJavaPath.setText(propertiesComponentProject.getValue("mapperJavaPath"));
-        textFieldMapperXmlPath.setText(propertiesComponentProject.getValue("mapperXmlPath"));
         textFieldAuthor.setText(propertiesComponent.getValue("author"));
         comboBoxDatabase.addItem(propertiesComponent.getValue("jdbcDatabase"));
         comboBoxDatabase.setSelectedItem(propertiesComponent.getValue("jdbcDatabase"));
+        textFieldProjectPath.setText(propertiesComponentProject.getValue("projectPath"));
+
+        comboBoxControllerPath.addItem(propertiesComponentProject.getValue("controllerPath"));
+        comboBoxControllerPath.setSelectedItem(propertiesComponentProject.getValue("controllerPath"));
+
+        comboBoxServicePath.addItem(propertiesComponentProject.getValue("servicePath"));
+        comboBoxServicePath.setSelectedItem(propertiesComponentProject.getValue("servicePath"));
+
+        comboBoxModelPath.addItem(propertiesComponentProject.getValue("modelPath"));
+        comboBoxModelPath.setSelectedItem(propertiesComponentProject.getValue("modelPath"));
+
+        comboBoxMapperPath.addItem(propertiesComponentProject.getValue("mapperPath"));
+        comboBoxMapperPath.setSelectedItem(propertiesComponentProject.getValue("mapperPath"));
 
         comboBoxDatabase.addPopupMenuListener(new PopupMenuListener() {
             @Override
@@ -112,96 +131,93 @@ public class ToolWindowUI {
 
             }
         });
-        modelButton.addActionListener(new ActionListener() {
+
+        comboBoxControllerPath.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                comboBoxClickAction(comboBoxControllerPath, "controller");
+            }
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) { }
+        });
+
+        comboBoxServicePath.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                comboBoxClickAction(comboBoxServicePath, "service");
+            }
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) { }
+        });
+
+        comboBoxModelPath.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                comboBoxClickAction(comboBoxModelPath, "model");
+            }
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) { }
+        });
+
+        comboBoxMapperPath.addPopupMenuListener(new PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+                comboBoxClickAction(comboBoxMapperPath, "dao");
+            }
+            @Override
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) { }
+            @Override
+            public void popupMenuCanceled(PopupMenuEvent e) { }
+        });
+
+        projectPathSelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String defaultFilePath;
-                if(!CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
-                    defaultFilePath = textFieldModelPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldMapperJavaPath.getText())){
-                    defaultFilePath = textFieldMapperJavaPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldMapperXmlPath.getText())){
-                    defaultFilePath = textFieldMapperXmlPath.getText();
-                }else {
-                    defaultFilePath = projectPath;
-                }
-                JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
-                jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                jFileChooser.setDialogTitle("select model path");
-                jFileChooser.showDialog(new JLabel(),"select");
-                File file = jFileChooser.getSelectedFile();
-                if(file == null){
-                    return;
-                }
-                textFieldModelPath.setText(file.getAbsolutePath());
-                if(CommonUtil.isNullOrEmpty(textFieldMapperJavaPath.getText())){
-                    textFieldMapperJavaPath.setText(file.getAbsolutePath());
-                }
-                if(CommonUtil.isNullOrEmpty(textFieldMapperXmlPath.getText())){
-                    textFieldMapperXmlPath.setText(file.getAbsolutePath());
-                }
+                selectPathBtnAction(textFieldProjectPath,"select a project package path");
+
+                comboBoxClickAction(comboBoxControllerPath, "controller");
+                comboBoxClickAction(comboBoxServicePath, "service");
+                comboBoxClickAction(comboBoxModelPath, "model");
+                comboBoxClickAction(comboBoxMapperPath, "dao");
             }
+
         });
-        mapperJavaButton.addActionListener(new ActionListener() {
+
+        controllerPathSelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String defaultFilePath;
-                if(!CommonUtil.isNullOrEmpty(textFieldMapperJavaPath.getText())){
-                    defaultFilePath = textFieldMapperJavaPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldMapperXmlPath.getText())){
-                    defaultFilePath = textFieldMapperXmlPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
-                    defaultFilePath = textFieldModelPath.getText();
-                }else {
-                    defaultFilePath = projectPath;
-                }
-                JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
-                jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                jFileChooser.setDialogTitle("select mapper.java path");
-                jFileChooser.showDialog(new JLabel(),"select");
-                File file = jFileChooser.getSelectedFile();
-                if(file == null){
-                    return;
-                }
-                textFieldMapperJavaPath.setText(file.getAbsolutePath());
-                if(CommonUtil.isNullOrEmpty(textFieldMapperXmlPath.getText())){
-                    textFieldMapperXmlPath.setText(file.getAbsolutePath());
-                }
-                if(CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
-                    textFieldModelPath.setText(file.getAbsolutePath());
-                }
+                selectPathBtnAction(comboBoxControllerPath,"select a controller path");
             }
         });
-        mapperXmlButton.addActionListener(new ActionListener() {
+
+        servicePathSelectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String defaultFilePath;
-                if(!CommonUtil.isNullOrEmpty(textFieldMapperXmlPath.getText())){
-                    defaultFilePath = textFieldMapperXmlPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldMapperJavaPath.getText())){
-                    defaultFilePath = textFieldMapperJavaPath.getText();
-                }else if(!CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
-                    defaultFilePath = textFieldModelPath.getText();
-                }else {
-                    defaultFilePath = projectPath;
-                }
-                JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
-                jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                jFileChooser.setDialogTitle("select Mapper.xml path");
-                jFileChooser.showDialog(new JLabel(),"select");
-                File file = jFileChooser.getSelectedFile();
-                if(file == null){
-                    return;
-                }
-                textFieldMapperXmlPath.setText(file.getAbsolutePath());
-                if(CommonUtil.isNullOrEmpty(textFieldMapperJavaPath.getText())){
-                    textFieldMapperJavaPath.setText(file.getAbsolutePath());
-                }
-                if(CommonUtil.isNullOrEmpty(textFieldModelPath.getText())){
-                    textFieldModelPath.setText(file.getAbsolutePath());
-                }
+                selectPathBtnAction(comboBoxServicePath,"select a service path");
             }
         });
+
+        modelPathSelectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectPathBtnAction(comboBoxModelPath,"select a model path");
+            }
+        });
+
+        mapperPathSelectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                selectPathBtnAction(comboBoxMapperPath,"select a mapper path");
+            }
+        });
+
+
         goButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -210,9 +226,11 @@ public class ToolWindowUI {
                 String jdbcPassword = textFieldPassword.getText();
                 String jdbcDatabase = (String) comboBoxDatabase.getSelectedItem();
                 String tableName = textFieldTableName.getText();
-                String modelPath = textFieldModelPath.getText();
-                String mapperJavaPath = textFieldMapperJavaPath.getText();
-                String mapperXmlPath = textFieldMapperXmlPath.getText();
+                String projectPath = textFieldProjectPath.getText();
+                String controllerPath = (String) comboBoxControllerPath.getSelectedItem();
+                String servicePath = (String) comboBoxServicePath.getSelectedItem();
+                String modelPath = (String) comboBoxModelPath.getSelectedItem();
+                String mapperPath = (String) comboBoxMapperPath.getSelectedItem();
                 String author = textFieldAuthor.getText();
                 if(CommonUtil.isNullOrEmpty(jdbcHost)){
                     messageLabel.setText("Host:Port required");
@@ -234,16 +252,24 @@ public class ToolWindowUI {
                     messageLabel.setText("TableName required");
                     return;
                 }
+                if(CommonUtil.isNullOrEmpty(projectPath)){
+                    messageLabel.setText("ModelPath required");
+                    return;
+                }
+                if(CommonUtil.isNullOrEmpty(controllerPath)){
+                    messageLabel.setText("ModelPath required");
+                    return;
+                }
+                if(CommonUtil.isNullOrEmpty(servicePath)){
+                    messageLabel.setText("ModelPath required");
+                    return;
+                }
                 if(CommonUtil.isNullOrEmpty(modelPath)){
                     messageLabel.setText("ModelPath required");
                     return;
                 }
-                if(CommonUtil.isNullOrEmpty(mapperJavaPath)){
-                    messageLabel.setText("MapperJavaPath required");
-                    return;
-                }
-                if(CommonUtil.isNullOrEmpty(mapperXmlPath)){
-                    messageLabel.setText("MapperXmlPath required");
+                if(CommonUtil.isNullOrEmpty(mapperPath)){
+                    messageLabel.setText("MapperPath required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(author)){
@@ -251,26 +277,33 @@ public class ToolWindowUI {
                     author = "default";
                 }
 
-                ConfigModel configModel = new ConfigModel();
-                configModel.setJdbcHost(jdbcHost);
-                configModel.setJdbcDatabase(jdbcDatabase);
-                configModel.setJdbcUserName(jdbcUserName);
-                configModel.setJdbcPassword(jdbcPassword);
-                configModel.setModelPath(modelPath.replace("\\","/"));
-                configModel.setMapperJavaPath(mapperJavaPath.replace("\\","/"));
-                configModel.setMapperXmlPath(mapperXmlPath.replace("\\","/"));
-                configModel.setAuthor(author);
-                configModel.setGenerateModel(modelCheckBox.isSelected());
-                configModel.setGenerateMapper(mapperCheckBox.isSelected());
                 propertiesComponent.setValue("jdbcHost",jdbcHost);
                 propertiesComponent.setValue("jdbcDatabase",jdbcDatabase);
                 propertiesComponent.setValue("jdbcUserName",jdbcUserName);
                 propertiesComponent.setValue("jdbcPassword",jdbcPassword);
                 propertiesComponent.setValue("tableName",tableName);
+                propertiesComponentProject.setValue("projectPath",projectPath);
                 propertiesComponentProject.setValue("modelPath",modelPath);
-                propertiesComponentProject.setValue("mapperJavaPath",mapperJavaPath);
-                propertiesComponentProject.setValue("mapperXmlPath",mapperXmlPath);
+                propertiesComponentProject.setValue("controllerPath",controllerPath);
+                propertiesComponentProject.setValue("servicePath",servicePath);
+                propertiesComponentProject.setValue("modelPath",modelPath);
+                propertiesComponentProject.setValue("mapperPath",mapperPath);
                 propertiesComponent.setValue("author",author);
+
+                ConfigModel configModel = new ConfigModel();
+                configModel.setJdbcHost(jdbcHost);
+                configModel.setJdbcDatabase(jdbcDatabase);
+                configModel.setJdbcUserName(jdbcUserName);
+                configModel.setJdbcPassword(jdbcPassword);
+                configModel.setControllerPath(CommonUtil.fomatPath(controllerPath));
+                configModel.setServicePath(CommonUtil.fomatPath(servicePath));
+                configModel.setModelPath(CommonUtil.fomatPath(modelPath));
+                configModel.setMapperJavaPath(CommonUtil.fomatPath(mapperPath));
+                configModel.setMapperXmlPath(CommonUtil.fomatPath(mapperPath));
+                configModel.setAuthor(author);
+                configModel.setGenerateModel(modelCheckBox.isSelected());
+                configModel.setGenerateMapper(mapperCheckBox.isSelected());
+                configModel.setGenerateControllerService(controllerServiceCheckBox.isSelected());
 
                 List<String> success = new ArrayList<>();
                 List<String> errors = new ArrayList<>();
@@ -300,5 +333,66 @@ public class ToolWindowUI {
 
             }
         });
+    }
+
+    private void selectPathBtnAction(JComboBox comboBox, String message){
+        String defaultFilePath;
+        if(!CommonUtil.isNullOrEmpty(comboBox.getSelectedItem())){
+            defaultFilePath = (String) comboBox.getSelectedItem();
+        }else if(!CommonUtil.isNullOrEmpty(textFieldProjectPath.getText())){
+            defaultFilePath = textFieldProjectPath.getText();
+        }else {
+            defaultFilePath = baseProjectPath;
+        }
+        JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
+        jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jFileChooser.setDialogTitle(message);
+        jFileChooser.showDialog(new JLabel(),"select");
+        File file = jFileChooser.getSelectedFile();
+        if(file == null){
+            return;
+        }
+        comboBox.addItem(file.getAbsolutePath());
+        comboBox.setSelectedItem(file.getAbsolutePath());
+        messageLabel.setText("Plugin Message");
+    }
+
+    private void selectPathBtnAction(JTextField textField, String message){
+        String defaultFilePath;
+        if(!CommonUtil.isNullOrEmpty(textField.getText())){
+            defaultFilePath = textField.getText();
+        }else if(!CommonUtil.isNullOrEmpty(textFieldProjectPath.getText())){
+            defaultFilePath = textFieldProjectPath.getText();
+        }else {
+            defaultFilePath = baseProjectPath;
+        }
+        JFileChooser jFileChooser = new JFileChooser(new File(defaultFilePath));
+        jFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        jFileChooser.setDialogTitle(message);
+        jFileChooser.showDialog(new JLabel(),"select");
+        File file = jFileChooser.getSelectedFile();
+        if(file == null){
+            return;
+        }
+        textField.setText(file.getAbsolutePath());
+        messageLabel.setText("Plugin Message");
+    }
+
+    private void comboBoxClickAction(JComboBox comboBox, String key){
+        String projectPath = textFieldProjectPath.getText();
+        if(CommonUtil.isNullOrEmpty(projectPath)){
+            messageLabel.setText("ProjectPath required");
+            return;
+        }
+        List<File> directoryByProjectPath = CommonUtil.searchDirectory(projectPath,key);
+        comboBox.removeAllItems();
+        if(directoryByProjectPath != null && directoryByProjectPath.size() > 0){
+            directoryByProjectPath.forEach(file -> {
+                comboBox.addItem(file.getAbsolutePath());
+            });
+            comboBox.setSelectedItem(directoryByProjectPath.get(0).getAbsolutePath());
+        }else {
+            messageLabel.setText("not found "+ key + " path");
+        }
     }
 }

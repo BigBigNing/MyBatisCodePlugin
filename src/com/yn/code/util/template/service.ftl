@@ -1,20 +1,20 @@
-package ${basePackage}.service.${sign};
-import ${basePackage}.model.${sign}.${modelNameUpperCamel};
+package ${serviceGenerateInfo.basePackage};
+import ${serviceGenerateInfo.modelPackage}.${serviceGenerateInfo.modelNameUpperCamel};
 
 /**
-* ${modelNameUpperCamel}Service
+* ${serviceGenerateInfo.modelNameUpperCamel}Service
 *
-* @author : ${author}
-* @date: ${date}
+* @author : ${serviceGenerateInfo.author}
+* @date: ${serviceGenerateInfo.date}
 **/
-public interface ${modelNameUpperCamel}Service {
+public interface ${serviceGenerateInfo.modelNameUpperCamel}Service {
 
     /**
      * 新增
-     * @param ${modelNameLowerCamel}
+     * @param ${serviceGenerateInfo.modelNameLowerCamel}
      * @return String
      */
-    String save(${modelNameUpperCamel} ${modelNameLowerCamel});
+    String save(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
 
     /**
      * 删除
@@ -25,16 +25,16 @@ public interface ${modelNameUpperCamel}Service {
 
     /**
      * 修改
-     * @param ${modelNameLowerCamel}
+     * @param ${serviceGenerateInfo.modelNameLowerCamel}
      * @return String
      */
-    String update(${modelNameUpperCamel} ${modelNameLowerCamel});
+    String update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
 
     /**
      * 查询
      * @param id
-     * @return ${modelNameUpperCamel}
+     * @return ${serviceGenerateInfo.modelNameUpperCamel}
      */
-    ${modelNameUpperCamel} findById(Integer id);
+    ${serviceGenerateInfo.modelNameUpperCamel} findById(Integer id);
 
 }

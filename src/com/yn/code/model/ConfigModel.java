@@ -18,9 +18,13 @@ public class ConfigModel {
     private String modelPath;
     private String mapperJavaPath;
     private String mapperXmlPath;
+    private String controllerPath;
+    private String servicePath;
+
 
     private Boolean generateModel;
     private Boolean generateMapper;
+    private Boolean generateControllerService;
 
 
     public String getJdbcHost() {
@@ -95,6 +99,22 @@ public class ConfigModel {
         this.mapperXmlPath = mapperXmlPath;
     }
 
+    public String getControllerPath() {
+        return controllerPath;
+    }
+
+    public void setControllerPath(String controllerPath) {
+        this.controllerPath = controllerPath;
+    }
+
+    public String getServicePath() {
+        return servicePath;
+    }
+
+    public void setServicePath(String servicePath) {
+        this.servicePath = servicePath;
+    }
+
     public Boolean getGenerateModel() {
         return generateModel;
     }
@@ -109,5 +129,13 @@ public class ConfigModel {
 
     public void setGenerateMapper(Boolean generateMapper) {
         this.generateMapper = generateMapper;
+    }
+
+    public Boolean getGenerateControllerService() {
+        return generateControllerService;
+    }
+
+    public void setGenerateControllerService(Boolean generateControllerService) {
+        this.generateControllerService = generateControllerService;
     }
 }

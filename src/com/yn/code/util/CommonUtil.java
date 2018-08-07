@@ -1,5 +1,7 @@
 package com.yn.code.util;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -132,4 +134,73 @@ public class CommonUtil {
     public static boolean isNeedImport(String type) {
         return importList.contains(type);
     }
+
+    public static String getBaseRequestMapping(String tableName) {
+        if (isNullOrEmpty(tableName)) {
+            return "";
+        }
+        if (!tableName.contains("_")) {
+            return tableName;
+        }
+        return tableName.replace("_","/");
+    }
+
+    /**
+     * 获取表名的第一个单词
+     * @param tableName
+     * @return
+     */
+    public static String getSign(String tableName) {
+        if (isNullOrEmpty(tableName)) {
+            return "";
+        }
+        if (!tableName.contains("_")) {
+            return tableName;
+        }
+        String sign = tableName.split("_")[0];
+        return toLowerCaseFirstOne(sign);
+    }
+
+    public static String fomatPath(String path) {
+        if(isNullOrEmpty(path)){
+            return "";
+        }
+        if(!path.endsWith("/")){
+            path = path+ '/';
+        }
+        return path.replace("\\","/");
+    }
+
+
+    /**
+     *  指定目录用关键字查找文件
+     * @param projectPath 要查找的目录
+     * @param type 类型 1：查找文件 2：查找文件夹
+     * @param keyWords 要查找的关键字
+     */
+    public static List<File> searchFiles(String projectPath, int type, String keyWords){
+        File fileDir = new File(projectPath);
+        File[] files = fileDir.listFiles();
+        if(files == null || files.length == 0){
+            return new ArrayList<>();
+        }
+        List<File> fileResult = new ArrayList<>();
+        for (File file: files) {
+            if(file.isDirectory()){
+                if(type == 2 && file.getName().equals(keyWords)){
+                    fileResult.add(file);
+                }
+                fileResult.addAll(searchFiles(file.getAbsolutePath(), type, keyWords));
+            }
+            if(type == 1 && file.isFile() && file.getName().equals(keyWords)){
+                fileResult.add(file);
+            }
+        }
+        return fileResult;
+    }
+
+    public static List<File> searchDirectory(String projectPath, String key){
+        return searchFiles(projectPath, 2, key);
+    }
+
 }

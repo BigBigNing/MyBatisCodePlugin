@@ -25,17 +25,4 @@ public class ${modelGenerateInfo.modelNameUpperCamel} {
     @ApiModelProperty(value = "${column.columnComment}")
     private ${column.columnJavaTypeName} ${column.columnCamelName};
     </#list>
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-        <#list modelGenerateInfo.columnList as column>
-        sb.append(", ${column.columnCamelName}=").append(${column.columnCamelName});
-        </#list>
-        sb.append("]");
-        return sb.toString();
-    }
 }

@@ -1,26 +1,26 @@
-package ${basePackage}.service.impl.${sign};
+package ${serviceGenerateInfo.basePackage}.impl;
 
-import ${basePackage}.dao.mapper.${sign}.${modelNameUpperCamel}Mapper;
-import ${basePackage}.model.${sign}.${modelNameUpperCamel};
-import ${basePackage}.service.${sign}.${modelNameUpperCamel}Service;
+import ${serviceGenerateInfo.mapperPackage}.${serviceGenerateInfo.modelNameUpperCamel}Mapper;
+import ${serviceGenerateInfo.modelPackage}.${serviceGenerateInfo.modelNameUpperCamel};
+import ${serviceGenerateInfo.servicePackage}.${serviceGenerateInfo.modelNameUpperCamel}Service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
-* ${modelNameUpperCamel}ServiceImpl
+* ${serviceGenerateInfo.modelNameUpperCamel}ServiceImpl
 *
-* @author : ${author}
-* @date: ${date}
+* @author : ${serviceGenerateInfo.author}
+* @date: ${serviceGenerateInfo.date}
 **/
 @Service
-public class ${modelNameUpperCamel}ServiceImpl implements ${modelNameUpperCamel}Service {
+public class ${serviceGenerateInfo.modelNameUpperCamel}ServiceImpl implements ${serviceGenerateInfo.modelNameUpperCamel}Service {
 
     @Autowired
-    private ${modelNameUpperCamel}Mapper ${modelNameLowerCamel}Mapper;
+    private ${serviceGenerateInfo.modelNameUpperCamel}Mapper ${serviceGenerateInfo.modelNameLowerCamel}Mapper;
 
     @Override
-    public String save(${modelNameUpperCamel} ${modelNameLowerCamel}) {
-        ${modelNameLowerCamel}Mapper.insertSelective(${modelNameLowerCamel});
+    public String save(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
+        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.insertSelective(${serviceGenerateInfo.modelNameLowerCamel});
         return "新增成功";
     }
 
@@ -30,14 +30,14 @@ public class ${modelNameUpperCamel}ServiceImpl implements ${modelNameUpperCamel}
     }
 
     @Override
-    public String update(${modelNameUpperCamel} ${modelNameLowerCamel}) {
-        ${modelNameLowerCamel}Mapper.updateByPrimaryKeySelective(${modelNameLowerCamel});
+    public String update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
+        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.updateByPrimaryKeySelective(${serviceGenerateInfo.modelNameLowerCamel});
         return "修改成功";
     }
 
     @Override
-    public ${modelNameUpperCamel} findById(Integer id) {
-        return ${modelNameLowerCamel}Mapper.selectByPrimaryKey(id);
+    public ${serviceGenerateInfo.modelNameUpperCamel} findById(Integer id) {
+        return ${serviceGenerateInfo.modelNameLowerCamel}Mapper.selectByPrimaryKey(id);
     }
 
 }
