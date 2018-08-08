@@ -10,12 +10,15 @@ import com.yn.code.util.MyException;
 import com.yn.code.util.TableUtil;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.text.Document;
+import java.awt.*;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +49,12 @@ public class ToolWindowUI {
     private JCheckBox modelCheckBox;
     private JCheckBox mapperCheckBox;
     private JCheckBox controllerServiceCheckBox;
+    private JCheckBox samePathCheckBox;
 
 
     private JLabel messageLabel;
+    private JTextField textFieldSign;
+
 
     private String baseProjectPath;
 
@@ -72,6 +78,7 @@ public class ToolWindowUI {
         textFieldUserName.setText(propertiesComponent.getValue("jdbcUserName"));
         textFieldPassword.setText(propertiesComponent.getValue("jdbcPassword"));
         textFieldTableName.setText(propertiesComponent.getValue("tableName"));
+        textFieldSign.setText(propertiesComponent.getValue("sign"));
         textFieldAuthor.setText(propertiesComponent.getValue("author"));
         comboBoxDatabase.addItem(propertiesComponent.getValue("jdbcDatabase"));
         comboBoxDatabase.setSelectedItem(propertiesComponent.getValue("jdbcDatabase"));
@@ -96,15 +103,15 @@ public class ToolWindowUI {
                 String jdbcUserName = textFieldUserName.getText();
                 String jdbcPassword = textFieldPassword.getText();
                 if(CommonUtil.isNullOrEmpty(jdbcHost)){
-                    messageLabel.setText("Host:Port required");
+                    showErrorMsg("Host:Port required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(jdbcUserName)){
-                    messageLabel.setText("UserName required");
+                    showErrorMsg("UserName required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(jdbcPassword)){
-                    messageLabel.setText("Password required");
+                    showErrorMsg("Password required");
                     return;
                 }
                 try{
@@ -115,10 +122,10 @@ public class ToolWindowUI {
                         comboBoxDatabase.addItem(databaseName);
                     });
                 }catch (MyException myException){
-                    messageLabel.setText(myException.getMeg());
+                    showErrorMsg(myException.getMeg());
                     LOGGER.info(myException);
                 }
-                messageLabel.setText("Plugin Message");
+                showDefultMsg("Plugin Message");
             }
 
             @Override
@@ -217,6 +224,28 @@ public class ToolWindowUI {
             }
         });
 
+        // 表名改变监听
+        Document document = textFieldTableName.getDocument();
+        document.addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if(!CommonUtil.isNullOrEmpty(textFieldTableName.getText())){
+                    textFieldSign.setText(CommonUtil.getSign(textFieldTableName.getText()));
+                }
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if(!CommonUtil.isNullOrEmpty(textFieldTableName.getText())){
+                    textFieldSign.setText(CommonUtil.getSign(textFieldTableName.getText()));
+                }
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                if(!CommonUtil.isNullOrEmpty(textFieldTableName.getText())){
+                    textFieldSign.setText(CommonUtil.getSign(textFieldTableName.getText()));
+                }
+            }
+        });
 
         goButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -232,44 +261,50 @@ public class ToolWindowUI {
                 String modelPath = (String) comboBoxModelPath.getSelectedItem();
                 String mapperPath = (String) comboBoxMapperPath.getSelectedItem();
                 String author = textFieldAuthor.getText();
+                String sign = textFieldSign.getText();
+
                 if(CommonUtil.isNullOrEmpty(jdbcHost)){
-                    messageLabel.setText("Host:Port required");
+                    showErrorMsg("Host:Port required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(jdbcUserName)){
-                    messageLabel.setText("UserName required");
+                    showErrorMsg("UserName required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(jdbcPassword)){
-                    messageLabel.setText("Password required");
+                    showErrorMsg("Password required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(jdbcDatabase)){
-                    messageLabel.setText("Database required");
+                    showErrorMsg("Database required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(tableName)){
-                    messageLabel.setText("TableName required");
+                    showErrorMsg("TableName required");
+                    return;
+                }
+                if(CommonUtil.isNullOrEmpty(sign)){
+                    showErrorMsg("模块文件夹 required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(projectPath)){
-                    messageLabel.setText("ModelPath required");
+                    showErrorMsg("ProjectPath required");
                     return;
                 }
-                if(CommonUtil.isNullOrEmpty(controllerPath)){
-                    messageLabel.setText("ModelPath required");
+                if(!samePathCheckBox.isSelected() && CommonUtil.isNullOrEmpty(controllerPath)){
+                    showErrorMsg("ControllerPath required");
                     return;
                 }
-                if(CommonUtil.isNullOrEmpty(servicePath)){
-                    messageLabel.setText("ModelPath required");
+                if(!samePathCheckBox.isSelected() && CommonUtil.isNullOrEmpty(servicePath)){
+                    showErrorMsg("ServicePath required");
                     return;
                 }
-                if(CommonUtil.isNullOrEmpty(modelPath)){
-                    messageLabel.setText("ModelPath required");
+                if(!samePathCheckBox.isSelected() && CommonUtil.isNullOrEmpty(modelPath)){
+                    showErrorMsg("ModelPath required");
                     return;
                 }
-                if(CommonUtil.isNullOrEmpty(mapperPath)){
-                    messageLabel.setText("MapperPath required");
+                if(!samePathCheckBox.isSelected() && CommonUtil.isNullOrEmpty(mapperPath)){
+                    showErrorMsg("MapperPath required");
                     return;
                 }
                 if(CommonUtil.isNullOrEmpty(author)){
@@ -282,6 +317,7 @@ public class ToolWindowUI {
                 propertiesComponent.setValue("jdbcUserName",jdbcUserName);
                 propertiesComponent.setValue("jdbcPassword",jdbcPassword);
                 propertiesComponent.setValue("tableName",tableName);
+                propertiesComponent.setValue("sign",sign);
                 propertiesComponentProject.setValue("projectPath",projectPath);
                 propertiesComponentProject.setValue("modelPath",modelPath);
                 propertiesComponentProject.setValue("controllerPath",controllerPath);
@@ -295,41 +331,61 @@ public class ToolWindowUI {
                 configModel.setJdbcDatabase(jdbcDatabase);
                 configModel.setJdbcUserName(jdbcUserName);
                 configModel.setJdbcPassword(jdbcPassword);
-                configModel.setControllerPath(CommonUtil.fomatPath(controllerPath));
-                configModel.setServicePath(CommonUtil.fomatPath(servicePath));
-                configModel.setModelPath(CommonUtil.fomatPath(modelPath));
-                configModel.setMapperJavaPath(CommonUtil.fomatPath(mapperPath));
-                configModel.setMapperXmlPath(CommonUtil.fomatPath(mapperPath));
+                configModel.setControllerPath(CommonUtil.fomatPath(controllerPath + "/" + sign));
+                configModel.setServicePath(CommonUtil.fomatPath(servicePath + "/" + sign));
+                configModel.setModelPath(CommonUtil.fomatPath(modelPath + "/" + sign));
+                configModel.setMapperJavaPath(CommonUtil.fomatPath(mapperPath + "/" + sign));
+                configModel.setMapperXmlPath(CommonUtil.fomatPath(mapperPath + "/" + sign));
                 configModel.setAuthor(author);
+                configModel.setSign(sign);
                 configModel.setGenerateModel(modelCheckBox.isSelected());
                 configModel.setGenerateMapper(mapperCheckBox.isSelected());
                 configModel.setGenerateControllerService(controllerServiceCheckBox.isSelected());
 
-                List<String> success = new ArrayList<>();
-                List<String> errors = new ArrayList<>();
-                String[] names = tableName.split(",");
-                for(String name : names){
-                    configModel.setTableName(name);
-                    try{
-                        new CodeGenerate().generate(configModel);
-                        success.add(name);
-                    }catch (MyException myException){
-                        errors.add(name + "(" + myException.getMeg() + ")");
-                        LOGGER.info(myException);
-                    }
+                if(samePathCheckBox.isSelected()){
+                    configModel.setControllerPath(CommonUtil.fomatPath(projectPath + "/" + sign));
+                    configModel.setServicePath(CommonUtil.fomatPath(projectPath + "/" + sign));
+                    configModel.setModelPath(CommonUtil.fomatPath(projectPath + "/" + sign));
+                    configModel.setMapperJavaPath(CommonUtil.fomatPath(projectPath + "/" + sign));
+                    configModel.setMapperXmlPath(CommonUtil.fomatPath(projectPath + "/" + sign));
                 }
-                if(errors.size() < 1){
-                    messageLabel.setText("success!!!");
-                } else {
-                    String message = "";
-                    for(String s : errors){
-                        message += " " + s;
-                    }
-                    if(success.size() > 0){
-                        message += " others is success";
-                    }
-                    messageLabel.setText(message);
+
+                configModel.setTableName(tableName);
+                try{
+                    new CodeGenerate().generate(configModel);
+                    showSuccessMsg("success!!!");
+                }catch (MyException myException){
+                    showErrorMsg(myException.getMeg());
+                    LOGGER.info(myException);
                 }
+
+
+
+//                List<String> success = new ArrayList<>();
+//                List<String> errors = new ArrayList<>();
+//                String[] names = tableName.split(",");
+//                for(String name : names){
+//                    configModel.setTableName(name);
+//                    try{
+//                        new CodeGenerate().generate(configModel);
+//                        success.add(name);
+//                    }catch (MyException myException){
+//                        errors.add(name + "(" + myException.getMeg() + ")");
+//                        LOGGER.info(myException);
+//                    }
+//                }
+//                if(errors.size() < 1){
+//                    showSuccessMsg("success!!!");
+//                } else {
+//                    String message = "";
+//                    for(String s : errors){
+//                        message += " " + s;
+//                    }
+//                    if(success.size() > 0){
+//                        message += " others is success";
+//                    }
+//                    showErrorMsg(message);
+//                }
 
             }
         });
@@ -354,7 +410,7 @@ public class ToolWindowUI {
         }
         comboBox.addItem(file.getAbsolutePath());
         comboBox.setSelectedItem(file.getAbsolutePath());
-        messageLabel.setText("Plugin Message");
+        showDefultMsg("Plugin Message");
     }
 
     private void selectPathBtnAction(JTextField textField, String message){
@@ -375,13 +431,13 @@ public class ToolWindowUI {
             return;
         }
         textField.setText(file.getAbsolutePath());
-        messageLabel.setText("Plugin Message");
+        showDefultMsg("Plugin Message");
     }
 
     private void comboBoxClickAction(JComboBox comboBox, String key){
         String projectPath = textFieldProjectPath.getText();
         if(CommonUtil.isNullOrEmpty(projectPath)){
-            messageLabel.setText("ProjectPath required");
+            showErrorMsg("ProjectPath required");
             return;
         }
         List<File> directoryByProjectPath = CommonUtil.searchDirectory(projectPath,key);
@@ -392,7 +448,22 @@ public class ToolWindowUI {
             });
             comboBox.setSelectedItem(directoryByProjectPath.get(0).getAbsolutePath());
         }else {
-            messageLabel.setText("not found "+ key + " path");
+            showErrorMsg("Not found "+ key + " path");
         }
+    }
+
+    private void showSuccessMsg(String msg){
+        messageLabel.setForeground(Color.green);
+        messageLabel.setText(msg);
+    }
+
+    private void showErrorMsg(String msg){
+        messageLabel.setForeground(Color.red);
+        messageLabel.setText(msg);
+    }
+
+    private void showDefultMsg(String msg){
+        messageLabel.setForeground(new Color(187,187,187));
+        messageLabel.setText(msg);
     }
 }

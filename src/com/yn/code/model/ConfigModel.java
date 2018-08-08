@@ -13,6 +13,7 @@ public class ConfigModel {
     private String jdbcPassword;
 
     private String tableName;
+    private String sign;
 
     private String author;
     private String modelPath;
@@ -65,6 +66,14 @@ public class ConfigModel {
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
     public String getAuthor() {
