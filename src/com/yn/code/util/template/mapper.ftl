@@ -1,6 +1,7 @@
 package ${mapperGenerateInfo.basePackage};
 
 import ${mapperGenerateInfo.modelPath}.${mapperGenerateInfo.modelNameUpperCamel};
+import java.util.List;
 
 /**
  * ${mapperGenerateInfo.tableComment}
@@ -9,6 +10,7 @@ import ${mapperGenerateInfo.modelPath}.${mapperGenerateInfo.modelNameUpperCamel}
  * @date ${mapperGenerateInfo.date}
  */
 public interface ${mapperGenerateInfo.modelNameUpperCamel}Mapper {
+
     /**
      * 全字段新增
      * @param ${mapperGenerateInfo.modelNameLowerCamel}
@@ -17,24 +19,22 @@ public interface ${mapperGenerateInfo.modelNameUpperCamel}Mapper {
     int insert(${mapperGenerateInfo.modelNameUpperCamel} ${mapperGenerateInfo.modelNameLowerCamel});
 
     /**
-     * 动态字段新增
-     * @param ${mapperGenerateInfo.modelNameLowerCamel}
-     * @return 新增条数
-     */
-    int insertSelective(${mapperGenerateInfo.modelNameUpperCamel} ${mapperGenerateInfo.modelNameLowerCamel});
-
-    /**
-     * 根据主键查询
-     * @param id
-     * @return ${mapperGenerateInfo.modelNameUpperCamel}
-     */
-    ${mapperGenerateInfo.modelNameUpperCamel} selectByPrimaryKey(${mapperGenerateInfo.primaryKeyJavaTypeName} ${mapperGenerateInfo.primaryKey});
-
-    /**
      * 根据主键动态修改
      * @param ${mapperGenerateInfo.modelNameLowerCamel}
      * @return 修改条数
      */
-    int updateByPrimaryKeySelective(${mapperGenerateInfo.modelNameUpperCamel} ${mapperGenerateInfo.modelNameLowerCamel});
+    int update(${mapperGenerateInfo.modelNameUpperCamel} ${mapperGenerateInfo.modelNameLowerCamel});
 
+    /**
+    * 根据主键查询
+    * @param id
+    * @return ${mapperGenerateInfo.modelNameUpperCamel}
+    */
+    ${mapperGenerateInfo.modelNameUpperCamel} queryByID(${mapperGenerateInfo.primaryKeyJavaTypeName} ${mapperGenerateInfo.primaryKey});
+
+    /**
+    * 查询列表
+    * @return ${mapperGenerateInfo.modelNameUpperCamel}
+    */
+    List<${mapperGenerateInfo.modelNameUpperCamel}> queryList();
 }

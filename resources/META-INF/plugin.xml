@@ -5,7 +5,7 @@
     <vendor email="1198904379@qq.com" url="1198904379@qq.com">No Company</vendor>
 
     <description><![CDATA[
-      可以自动生成model、mapper、xml<br>
+      可以自动生成model、mapper、xml、controller、service<br>
     ]]></description>
 
     <change-notes><![CDATA[

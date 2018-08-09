@@ -1,6 +1,7 @@
 package com.yn.code.ui;
 
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.notification.*;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.yn.code.generate.CodeGenerate;
@@ -8,19 +9,14 @@ import com.yn.code.model.ConfigModel;
 import com.yn.code.util.CommonUtil;
 import com.yn.code.util.MyException;
 import com.yn.code.util.TableUtil;
-
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.Document;
-import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ToolWindowUI {
@@ -52,9 +48,7 @@ public class ToolWindowUI {
     private JCheckBox samePathCheckBox;
 
 
-    private JLabel messageLabel;
     private JTextField textFieldSign;
-
 
     private String baseProjectPath;
 
@@ -63,6 +57,10 @@ public class ToolWindowUI {
     }
 
     private static final Logger LOGGER = Logger.getInstance(ToolWindowUI.class);
+
+    private NotificationGroup myBatisCode_notification_group = new NotificationGroup("MyBatisCodePlugin",
+            NotificationDisplayType.BALLOON, true);
+
 
     public ToolWindowUI(Project project) {
         this.baseProjectPath = project.getBasePath();
@@ -125,7 +123,6 @@ public class ToolWindowUI {
                     showErrorMsg(myException.getMeg());
                     LOGGER.info(myException);
                 }
-                showDefultMsg("Plugin Message");
             }
 
             @Override
@@ -353,13 +350,11 @@ public class ToolWindowUI {
                 configModel.setTableName(tableName);
                 try{
                     new CodeGenerate().generate(configModel);
-                    showSuccessMsg("success!!!");
+                    showSuccessMsg("Table " + tableName + " has been generated successfully!");
                 }catch (MyException myException){
                     showErrorMsg(myException.getMeg());
                     LOGGER.info(myException);
                 }
-
-
 
 //                List<String> success = new ArrayList<>();
 //                List<String> errors = new ArrayList<>();
@@ -410,7 +405,6 @@ public class ToolWindowUI {
         }
         comboBox.addItem(file.getAbsolutePath());
         comboBox.setSelectedItem(file.getAbsolutePath());
-        showDefultMsg("Plugin Message");
     }
 
     private void selectPathBtnAction(JTextField textField, String message){
@@ -431,7 +425,6 @@ public class ToolWindowUI {
             return;
         }
         textField.setText(file.getAbsolutePath());
-        showDefultMsg("Plugin Message");
     }
 
     private void comboBoxClickAction(JComboBox comboBox, String key){
@@ -453,17 +446,13 @@ public class ToolWindowUI {
     }
 
     private void showSuccessMsg(String msg){
-        messageLabel.setForeground(Color.green);
-        messageLabel.setText(msg);
+        Notification notification = myBatisCode_notification_group.createNotification("MyBatisCodePlugin message",msg, NotificationType.INFORMATION,null);
+        notification.expire();
+        Notifications.Bus.notify(notification);
     }
 
     private void showErrorMsg(String msg){
-        messageLabel.setForeground(Color.red);
-        messageLabel.setText(msg);
-    }
-
-    private void showDefultMsg(String msg){
-        messageLabel.setForeground(new Color(187,187,187));
-        messageLabel.setText(msg);
+        Notification notification = myBatisCode_notification_group.createNotification("MyBatisCodePlugin message",msg, NotificationType.ERROR,null);
+        Notifications.Bus.notify(notification);
     }
 }

@@ -5,6 +5,9 @@ import ${serviceGenerateInfo.modelPackage}.${serviceGenerateInfo.modelNameUpperC
 import ${serviceGenerateInfo.servicePackage}.${serviceGenerateInfo.modelNameUpperCamel}Service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.maidao.commons.model.base.dto.Resp;
+import java.util.List;
+
 
 /**
 * ${serviceGenerateInfo.modelNameUpperCamel}ServiceImpl
@@ -19,25 +22,24 @@ public class ${serviceGenerateInfo.modelNameUpperCamel}ServiceImpl implements ${
     private ${serviceGenerateInfo.modelNameUpperCamel}Mapper ${serviceGenerateInfo.modelNameLowerCamel}Mapper;
 
     @Override
-    public String save(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
-        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.insertSelective(${serviceGenerateInfo.modelNameLowerCamel});
-        return "新增成功";
+    public Resp${"<"}String${">"} insert(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
+        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.insert(${serviceGenerateInfo.modelNameLowerCamel});
+        return Resp.success("新增成功");
     }
 
     @Override
-    public String deleteById(Integer id) {
-        return null;
+    public Resp${"<"}String${">"} update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
+        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.update(${serviceGenerateInfo.modelNameLowerCamel});
+        return Resp.success("修改成功");
     }
 
     @Override
-    public String update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel}) {
-        ${serviceGenerateInfo.modelNameLowerCamel}Mapper.updateByPrimaryKeySelective(${serviceGenerateInfo.modelNameLowerCamel});
-        return "修改成功";
+    public Resp${"<"}${serviceGenerateInfo.modelNameUpperCamel}${">"} detail(Integer id) {
+        return Resp.success(${serviceGenerateInfo.modelNameLowerCamel}Mapper.queryByID(id));
     }
 
     @Override
-    public ${serviceGenerateInfo.modelNameUpperCamel} findById(Integer id) {
-        return ${serviceGenerateInfo.modelNameLowerCamel}Mapper.selectByPrimaryKey(id);
+    public Resp${"<List<"}${serviceGenerateInfo.modelNameUpperCamel}${">>"} list() {
+        return Resp.success(${serviceGenerateInfo.modelNameLowerCamel}Mapper.queryList());
     }
-
 }

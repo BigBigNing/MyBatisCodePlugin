@@ -1,5 +1,7 @@
 package ${serviceGenerateInfo.basePackage};
 import ${serviceGenerateInfo.modelPackage}.${serviceGenerateInfo.modelNameUpperCamel};
+import com.maidao.commons.model.base.dto.Resp;
+import java.util.List;
 
 /**
 * ${serviceGenerateInfo.modelNameUpperCamel}Service
@@ -14,27 +16,25 @@ public interface ${serviceGenerateInfo.modelNameUpperCamel}Service {
      * @param ${serviceGenerateInfo.modelNameLowerCamel}
      * @return String
      */
-    String save(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
-
-    /**
-     * 删除
-     * @param id
-     * @return String
-     */
-    String deleteById(Integer id);
+    Resp${"<"}String${">"} insert(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
 
     /**
      * 修改
      * @param ${serviceGenerateInfo.modelNameLowerCamel}
      * @return String
      */
-    String update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
+    Resp${"<"}String${">"} update(${serviceGenerateInfo.modelNameUpperCamel} ${serviceGenerateInfo.modelNameLowerCamel});
 
     /**
      * 查询
      * @param id
      * @return ${serviceGenerateInfo.modelNameUpperCamel}
      */
-    ${serviceGenerateInfo.modelNameUpperCamel} findById(Integer id);
+    Resp${"<"}${serviceGenerateInfo.modelNameUpperCamel}${">"} detail(Integer id);
 
+    /**
+    * 查询列表
+    * @return ${serviceGenerateInfo.modelNameUpperCamel}
+    */
+    Resp${"<List<"}${serviceGenerateInfo.modelNameUpperCamel}${">>"} list();
 }

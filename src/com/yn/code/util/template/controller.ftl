@@ -4,6 +4,8 @@ import ${controllerGenerateInfo.servicePackage}.${controllerGenerateInfo.modelNa
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.ApiOperation;
+import com.maidao.commons.model.base.dto.Resp;
+import java.util.List;
 
 /**
 * ${controllerGenerateInfo.modelNameUpperCamel}Controller
@@ -12,33 +14,33 @@ import io.swagger.annotations.ApiOperation;
 * @date: ${controllerGenerateInfo.date}
 **/
 @RestController
-@RequestMapping("/${controllerGenerateInfo.baseRequestMapping}/")
+@RequestMapping("${controllerGenerateInfo.baseRequestMapping}")
 public class ${controllerGenerateInfo.modelNameUpperCamel}Controller {
 
     @Autowired
     private ${controllerGenerateInfo.modelNameUpperCamel}Service ${controllerGenerateInfo.modelNameLowerCamel}Service;
 
-    @RequestMapping("add")
+    @PostMapping
     @ApiOperation("新增")
-    public String add(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
-        return ${controllerGenerateInfo.modelNameLowerCamel}Service.save(${controllerGenerateInfo.modelNameLowerCamel});
+    public Resp${"<"}String${">"} insert(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.insert(${controllerGenerateInfo.modelNameLowerCamel});
     }
 
-    @DeleteMapping("delete/{id}")
-    @ApiOperation("删除")
-    public String delete(@PathVariable("id") Integer id) {
-        return ${controllerGenerateInfo.modelNameLowerCamel}Service.deleteById(id);
-    }
-
-    @PostMapping("update")
+    @PutMapping
     @ApiOperation("修改")
-    public String update(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
+    public Resp${"<"}String${">"} update(@ModelAttribute ${controllerGenerateInfo.modelNameUpperCamel} ${controllerGenerateInfo.modelNameLowerCamel}) {
         return ${controllerGenerateInfo.modelNameLowerCamel}Service.update(${controllerGenerateInfo.modelNameLowerCamel});
     }
 
-    @GetMapping("detail/{id}")
+    @GetMapping("{id}")
     @ApiOperation("查询详情")
-    public ${controllerGenerateInfo.modelNameUpperCamel} detail(@PathVariable("id") Integer id) {
-        return ${controllerGenerateInfo.modelNameLowerCamel}Service.findById(id);
+    public Resp${"<"}${controllerGenerateInfo.modelNameUpperCamel}${">"} detail(@PathVariable("id") Integer id) {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.detail(id);
+    }
+
+    @GetMapping
+    @ApiOperation("查询列表")
+    public Resp${"<List<"}${controllerGenerateInfo.modelNameUpperCamel}${">>"} list() {
+        return ${controllerGenerateInfo.modelNameLowerCamel}Service.list();
     }
 }
