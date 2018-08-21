@@ -2,7 +2,7 @@
     <id>ynynynynnynyn</id>
     <name>MyBatisCodePlugin</name>
     <version>1.0</version>
-    <vendor email="1198904379@qq.com" url="1198904379@qq.com">No Company</vendor>
+    <vendor email="1198904379@qq.com" url="1198904379@qq.com"></vendor>
 
     <description><![CDATA[
       可以自动生成model、mapper、xml、controller、service<br>

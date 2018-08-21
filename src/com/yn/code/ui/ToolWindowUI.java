@@ -447,7 +447,6 @@ public class ToolWindowUI {
 
     private void showSuccessMsg(String msg){
         Notification notification = myBatisCode_notification_group.createNotification("MyBatisCodePlugin message",msg, NotificationType.INFORMATION,null);
-        notification.expire();
         Notifications.Bus.notify(notification);
     }
 
