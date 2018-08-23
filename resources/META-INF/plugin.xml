@@ -23,7 +23,7 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="MyBatisCode" secondary="true"  anchor="right" canCloseContents="true" factoryClass="com.yn.code.config.ToolWindowConfig" />
+        <toolWindow id="MyBatisCode" secondary="true"  anchor="right" canCloseContents="false" factoryClass="com.yn.code.config.ToolWindowConfig" />
     </extensions>
 
     <actions>

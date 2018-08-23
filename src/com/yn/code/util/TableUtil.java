@@ -36,8 +36,13 @@ public class TableUtil {
         String tableComment = "";
         try {
             ResultSet resultSet = jdbcUtil.getResultSet(sql.toString());
+            int rowCount = 0;
             while (resultSet.next()) {
+                rowCount++;
                 tableComment = resultSet.getString("Comment");
+            }
+            if(rowCount == 0){
+                throw new MyException("Table '" + tableName + "' not found in '" + database + "'");
             }
             jdbcUtil.jdbcClose();
         } catch (MyException e) {
@@ -48,7 +53,7 @@ public class TableUtil {
             throw new MyException("Table name is wrong!");
         }
         if(CommonUtil.isNullOrEmpty(tableComment)){
-            throw new MyException("Table not found or table comment is empty!");
+            throw new MyException("Please add a comment for table '" + tableName + "'");
         }
         TableInfo tableBase = new TableInfo();
         tableBase.setTableName(tableName);
