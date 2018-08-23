@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>ynynynynnynyn</id>
-    <name>MyBatisCodePlugin</name>
+    <name>CodeGeneratePlugin</name>
     <version>1.0</version>
     <vendor email="1198904379@qq.com" url="1198904379@qq.com"></vendor>
 
@@ -23,7 +23,7 @@
     -->
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow id="MyBatisCode" secondary="true"  anchor="right" canCloseContents="false" factoryClass="com.yn.code.config.ToolWindowConfig" />
+        <toolWindow id="CodeGenerate" secondary="true"  anchor="right" canCloseContents="false" factoryClass="com.yn.code.config.ToolWindowConfig" />
     </extensions>
 
     <actions>
