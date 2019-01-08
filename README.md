@@ -1,29 +1,37 @@
 # idea代码生成插件使用说明
 > 有图形用户界面，基于窗口(项目)级别，提供参数记忆、路径选择界面、自动匹配路径和包，简化了操作流程，方便随时打开使用，符合当前公司开发规范
+
 ## 使用方法
 ### 下载插件
-[点此下载MyBatisCodePlugin1.0插件](https://img.gegejia.com/MyBatisCodePlugin1.0.zip) 不要解压直接安装
+[点此下载MyBatisCodePlugin最新插件](https://oss.mbyundian.com/maidao/plugin/MyBatisCodePlugin1.0.zip) 不要解压直接安装
 ### 安装插件
-File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBatisCodePlugin1.0.zip文件点ok -- ok -- Restart<br>
-<image width="1385" heigh="810" src="https://img.gegejia.com/installplugin.gif"/>
+File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBatisCodePluginLatest.zip文件点ok -- ok -- Restart<br>
+<image width="1385" heigh="810" src="https://oss.mbyundian.com/maidao/plugin/install.gif"/>
 ### 运行插件
 idea窗口右下角打开插件<br>
+<image width="573" heigh="575" src="https:/oss.mbyundian.com/maidao/plugin/open.png"/>
+
 ### 使用插件
 #### 步骤一（可省略）
 填入基本信息并选择Database（有全局参数记忆功能，填一次后面使用就不用填了）<br>
+<image width="573" heigh="575" src="https://oss.mbyundian.com/maidao/plugin/1.png"/><br>
 #### 步骤二
 填入要生成的TableName，自动匹配模块名（项目级别参数记忆）<br>
+<image width="533" heigh="77" src="https://oss.mbyundian.com/maidao/plugin/2.gif"/><br>
 #### 步骤三（可省略）
 选择项目所在文件夹（ProjectPath）精确到com文件夹就行了，自动匹配项目已有的controller、service、model、mapper（dao）目录，也可手选或填写 （项目级别参数记忆）<br>
+<image width="1385" heigh="811" src="https://oss.mbyundian.com/maidao/plugin/3.gif"/><br>
 #### 步骤四
 选择好要生成的内容，点击"Go"按钮生成，若失败则弹消息提示框提示失败信息<br>
+<image width="1385" heigh="807" src="https://oss.mbyundian.com/maidao/plugin/4.gif"/><br>
 #### 附加项
 选中"全部生成到ProjectPath"，则生成的文件全部保存在ProjectPath路径文件夹（需要选择或填写更加精确的ProjectPath路径）<br>
+<image width="1385" heigh="807" src="https://oss.mbyundian.com/maidao/plugin/5.gif"/><br>
 
 ### 提示
 生成的文件会被强制放到相应文件夹中，有重名则会被替换，生成后Synchronize项目
 
-### 常见问题
+## 常见问题
 - 提示文件生成成功但idea不显示文件
 ```text
 问题解释：idea不会实时刷新用户文件，需要用户手动刷新
@@ -35,8 +43,8 @@ idea窗口右下角打开插件<br>
 解决方法：重新选择正确的ProjectPath，controller、service、model、dao也可以手动填写或者选择，若填写的文件本身不存在也会自动生成
 ```
 
-### 生成代码示例
-#### Model
+## 生成代码示例
+### Model
 ```java
 package com.maidao.center.product.web.seller;
 
@@ -79,7 +87,7 @@ public class SellerInvoiceInfo {
 }
 ```
 
-#### Mapper
+### Mapper
 ```java
 package com.maidao.center.product.web.seller;
 
@@ -123,7 +131,7 @@ public interface SellerInvoiceInfoMapper {
 }
 ```
 
-#### MapperXml
+### MapperXml
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -186,7 +194,7 @@ public interface SellerInvoiceInfoMapper {
 </mapper>
 ```
 
-#### Controller
+### Controller
 ```java
 package com.maidao.center.product.web.seller;
 import com.maidao.center.product.web.seller.SellerInvoiceInfo;
@@ -236,7 +244,7 @@ public class SellerInvoiceInfoController {
 }
 ```
 
-#### Service
+### Service
 ```java
 package com.maidao.center.product.web.seller;
 import com.maidao.center.product.web.seller.SellerInvoiceInfo;
@@ -280,7 +288,7 @@ public interface SellerInvoiceInfoService {
 }
 ```
 
-#### ServiceImpl
+### ServiceImpl
 ```java
 package com.maidao.center.product.web.seller.impl;
 
@@ -328,3 +336,10 @@ public class SellerInvoiceInfoServiceImpl implements SellerInvoiceInfoService {
     }
 }
 ```
+
+## 插件源码
+```text
+https://github.com/BigBigNing/MyBatisCodePlugin
+```
+
+有bug或建议及时反馈
