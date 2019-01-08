@@ -2,7 +2,7 @@
 > 有图形用户界面，基于窗口(项目)级别，提供参数记忆、路径选择界面、自动匹配路径和包，简化了操作流程，方便随时打开使用，符合当前公司开发规范
 ## 使用方法
 ### 下载插件
-[点此下载MyBatisCodePlugin1.0插件](https://img.gegejia.com/MyBatisCodePluginLatest.zip) 不要解压直接安装
+[点此下载MyBatisCodePlugin1.0插件](https://img.gegejia.com/MyBatisCodePlugin1.0.zip) 不要解压直接安装
 ### 安装插件
 File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBatisCodePlugin1.0.zip文件点ok -- ok -- Restart<br>
 <image width="1385" heigh="810" src="https://img.gegejia.com/installplugin.gif"/>
