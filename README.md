@@ -5,7 +5,7 @@
 [点此下载MyBatisCodePlugin1.0插件](https://mbyd-dev.oss-cn-qingdao.aliyuncs.com/maidao/plugins/MyBatisCodePluginLatest.zip) 不要解压直接安装
 ### 安装插件
 File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBatisCodePlugin1.0.zip文件点ok -- ok -- Restart<br>
-<image width="1385" heigh="810" src="https://oss.mbyundian.com/maidao/plugins/install.gif"/>
+<image width="1385" heigh="810" src="https://img.gegejia.com/installplugin.gif"/>
 ### 运行插件
 idea窗口右下角打开插件<br>
 ### 使用插件
