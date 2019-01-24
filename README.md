@@ -3,7 +3,7 @@
 
 ## 使用方法
 ### 下载插件
-[点此下载MyBatisCodePlugin最新插件](https://oss.mbyundian.com/maidao/plugin/MyBatisCodePlugin1.0.zip) 不要解压直接安装
+[点此下载MyBatisCodePlugin最新插件](https://download.csdn.net/download/qq_21370913/10936279) 不要解压直接安装
 ### 安装插件
 File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBatisCodePluginLatest.zip文件点ok -- ok -- Restart<br>
 <image width="1385" heigh="810" src="https://oss.mbyundian.com/maidao/plugin/install.gif"/>
