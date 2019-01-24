@@ -9,7 +9,7 @@ File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBati
 <image width="1385" heigh="810" src="https://oss.mbyundian.com/maidao/plugin/install.gif"/>
 ### 运行插件
 idea窗口右下角打开插件<br>
-<image width="573" heigh="575" src="https:/oss.mbyundian.com/maidao/plugin/open.png"/>
+<image width="573" heigh="575" src="https://oss.mbyundian.com/maidao/plugin/open.png"/><br>
 
 ### 使用插件
 #### 步骤一（可省略）
