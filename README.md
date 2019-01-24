@@ -1,5 +1,5 @@
 # idea代码生成插件使用说明
-> 有图形用户界面，基于窗口(项目)级别，提供参数记忆、路径选择界面、自动匹配路径和包，简化了操作流程，方便随时打开使用，符合当前公司开发规范
+> Spring&MyBatis框架，有图形用户界面，基于窗口(项目)级别，提供参数记忆、路径选择界面、自动匹配路径和包，简化了操作流程，方便随时打开使用，符合大部分公司开发规范，controller、service、model、dao生成项目可选
 
 ## 使用方法
 ### 下载插件
@@ -9,7 +9,7 @@ File -- Settings -- Plugins -- install plugin from disk -- 选中下载的MyBati
 <image width="1385" heigh="810" src="https://oss.mbyundian.com/maidao/plugin/install.gif"/>
 ### 运行插件
 idea窗口右下角打开插件<br>
-<image width="573" heigh="575" src="https:/oss.mbyundian.com/maidao/plugin/open.png"/>
+<image width="573" heigh="575" src="https://oss.mbyundian.com/maidao/plugin/open.png"/><br>
 
 ### 使用插件
 #### 步骤一（可省略）
@@ -44,7 +44,7 @@ idea窗口右下角打开插件<br>
 ```
 
 ## 生成代码示例
-### Model
+### Model（使用lombok）
 ```java
 package com.maidao.center.product.web.seller;
 
